@@ -9,7 +9,18 @@ services:
     restart: always
     networks:
       iot:
-          
+  
+  consumer:
+    container_name: iot.consumer
+    image: iot.consumer
+    build:
+      context: ./consumer
+    env_file:
+      - .env
+    restart: always
+    networks:
+      iot:
+
   rabbitmq:
     image: rabbitmq:3-management
     env_file:
