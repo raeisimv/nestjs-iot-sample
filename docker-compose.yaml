@@ -4,6 +4,16 @@ services:
     image: iot.producer
     build:
       context: ./producer
+    env_file:
+      - .env
+    restart: always
+    networks:
+      iot:
+          
+  rabbitmq:
+    image: rabbitmq:3-management
+    env_file:
+      - .env
     restart: always
     networks:
       iot:
