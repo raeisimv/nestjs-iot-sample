@@ -1,0 +1,13 @@
+services:
+  producer:
+    container_name: iot.producer
+    image: iot.producer
+    build:
+      context: ./producer
+    restart: always
+    networks:
+      iot:
+
+networks:
+  iot:
+    driver: bridge
