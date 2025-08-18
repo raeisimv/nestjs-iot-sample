@@ -21,10 +21,9 @@ export class SettingsService {
         username: this.config.get<string>('RABBITMQ_DEFAULT_USER'),
         password: this.config.get<string>('RABBITMQ_DEFAULT_PASS'),
         exchange: this.config.get<string>('RABBITMQ_EXCHANGE'),
-        signalRoutingKey: this.config.get<string>(
-          'RABBITMQ_ROUTING_KEY_SIGNAL',
-        ),
+        signalRoutingKey: this.config.get('RABBITMQ_ROUTING_KEY_SIGNAL'),
       },
+      mongodbURI: this.config.get<string>('MONGO_URI'),
     } as ISettingData;
   }
 }
