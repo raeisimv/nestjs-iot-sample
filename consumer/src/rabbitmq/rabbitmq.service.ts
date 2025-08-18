@@ -2,13 +2,18 @@ import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { ConfirmChannel, ConsumeMessage } from 'amqplib';
 import { SettingsService } from '../settings/settings.service';
 import amqp, { ChannelWrapper } from 'amqp-connection-manager';
+import { XRayInboundService } from '../x-ray/x-ray-inbound.service';
+import { IXRayRawSignal } from '../x-ray/interfaces';
 
 @Injectable()
 export class RabbitmqService implements OnModuleInit {
   private readonly logger = new Logger(RabbitmqService.name);
   private channel: ChannelWrapper;
 
-  constructor(private readonly settingService: SettingsService) {}
+  constructor(
+    private readonly settingService: SettingsService,
+    private readonly xrayInboundService: XRayInboundService,
+  ) {}
 
   async onModuleInit() {
     this.logger.debug('RabbitmqService | onModuleInit');
@@ -43,9 +48,7 @@ export class RabbitmqService implements OnModuleInit {
       return;
     }
     const content = msg.content.toString();
-    const payload = JSON.parse(content) as object;
-    this.logger.debug(
-      `RabbitmqService | onXRayEvent: ${JSON.stringify(payload)}`,
-    );
+    const payload = JSON.parse(content) as IXRayRawSignal;
+    this.xrayInboundService.processSignal(payload);
   }
 }
