@@ -7,6 +7,8 @@ services:
     env_file:
       - .env
     restart: always
+    depends_on:
+      - rabbitmq
     networks:
       iot:
   
@@ -18,6 +20,9 @@ services:
     env_file:
       - .env
     restart: always
+    depends_on:
+      - rabbitmq
+      - mongo
     networks:
       iot:
 
@@ -26,6 +31,24 @@ services:
     env_file:
       - .env
     restart: always
+    networks:
+      iot:
+
+  mongo:
+    image: mongo
+    restart: always
+    env_file:
+      - .env
+    networks:
+      iot:
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - "8081:8081"
+    env_file:
+      - .env
     networks:
       iot:
 
