@@ -1,0 +1,51 @@
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import { ConfirmChannel, ConsumeMessage } from 'amqplib';
+import { SettingsService } from '../settings/settings.service';
+import amqp, { ChannelWrapper } from 'amqp-connection-manager';
+
+@Injectable()
+export class RabbitmqService implements OnModuleInit {
+  private readonly logger = new Logger(RabbitmqService.name);
+  private channel: ChannelWrapper;
+
+  constructor(private readonly settingService: SettingsService) {}
+
+  async onModuleInit() {
+    this.logger.debug('RabbitmqService | onModuleInit');
+    const conn = amqp.connect({
+      hostname: this.settingService.getConfig().rabbitmq.hostname,
+      username: this.settingService.getConfig().rabbitmq.username,
+      password: this.settingService.getConfig().rabbitmq.password,
+    });
+    this.channel = conn.createChannel();
+    await this.channel.addSetup(async (channel: ConfirmChannel) => {
+      await channel.assertExchange(
+        this.settingService.getConfig().rabbitmq.exchange,
+        'topic',
+        {
+          durable: false,
+        },
+      );
+      const QUEUE_NAME = 'consumer.x-ray';
+      await channel.assertQueue(QUEUE_NAME, { exclusive: false });
+      await channel.bindQueue(
+        QUEUE_NAME,
+        this.settingService.getConfig().rabbitmq.exchange,
+        this.settingService.getConfig().rabbitmq.signalRoutingKey,
+      );
+      await channel.consume(QUEUE_NAME, this.onXRayEvent.bind(this));
+    });
+  }
+
+  private onXRayEvent(msg: ConsumeMessage) {
+    this.logger.debug('RabbitmqService | onXRayEvent');
+    if (!msg?.content) {
+      return;
+    }
+    const content = msg.content.toString();
+    const payload = JSON.parse(content) as object;
+    this.logger.debug(
+      `RabbitmqService | onXRayEvent: ${JSON.stringify(payload)}`,
+    );
+  }
+}

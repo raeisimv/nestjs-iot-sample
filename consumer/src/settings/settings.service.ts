@@ -17,7 +17,7 @@ export class SettingsService {
     private parseConfig(): ISettingData {
         return {
             rabbitmq: {
-                host: this.config.get<string>('RABBITMQ_HOST'),
+                hostname: this.config.get<string>('RABBITMQ_HOST'),
                 username: this.config.get<string>('RABBITMQ_DEFAULT_USER'),
                 password: this.config.get<string>('RABBITMQ_DEFAULT_PASS'),
                 exchange: this.config.get<string>('RABBITMQ_EXCHANGE'),

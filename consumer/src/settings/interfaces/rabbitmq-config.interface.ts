@@ -1,5 +1,5 @@
 export interface IRabbitmqConfig {
-    host: string;
+    hostname: string;
     username: string;
     password: string;
     exchange: string;
