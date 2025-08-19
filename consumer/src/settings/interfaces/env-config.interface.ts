@@ -6,4 +6,6 @@ export interface IEnvConfig {
   RABBITMQ_ROUTING_KEY_SIGNAL: string;
 
   MONGO_URI: string;
+  NODE_PORT: number;
+  ENABLE_SWAGGER: string;
 }

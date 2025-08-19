@@ -17,7 +17,7 @@ export class XRayService {
   }
 
   async getLatestRecord(deviceId: string) {
-    const rec: XRayDocument | null = await this.xrayModel.findById(deviceId);
+    const rec: XRayDocument | null = await this.xrayModel.findOne({ deviceId });
     return rec?.toJSON();
   }
 
