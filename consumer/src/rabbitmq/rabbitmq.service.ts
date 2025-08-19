@@ -43,7 +43,7 @@ export class RabbitmqService implements OnModuleInit {
   }
 
   private onXRayEvent(msg: ConsumeMessage) {
-    this.logger.debug('RabbitmqService | onXRayEvent');
+    // this.logger.debug('RabbitmqService | onXRayEvent');
     if (!msg?.content) {
       return;
     }
