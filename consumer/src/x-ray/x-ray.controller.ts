@@ -1,7 +1,7 @@
 import { ApiTags } from '@nestjs/swagger';
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { XRayService } from './x-ray.service';
-import * as interfaces from './interfaces';
+import { AddXrayDto } from './dtos';
 
 @Controller('api/xray')
 @ApiTags('XRay')
@@ -12,13 +12,14 @@ export class XRayController {
   getDevice(@Param('id') deviceId: string) {
     return this.xrayService.getLatestRecord(deviceId);
   }
+
   @Get()
   getDeviceIds() {
     return this.xrayService.getDeviceIds();
   }
 
   @Post()
-  addSignal(@Body() device: interfaces.IXRayModel) {
+  addSignal(@Body() device: AddXrayDto) {
     return this.xrayService.create(device);
   }
 }

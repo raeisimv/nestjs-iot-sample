@@ -13,11 +13,16 @@ export class XRayService {
   ) {}
 
   create(model: IXRayModel) {
+    console.log(JSON.stringify(model, null, 2));
     return this.xrayModel.create(model);
   }
 
   async getLatestRecord(deviceId: string) {
-    const rec: XRayDocument | null = await this.xrayModel.findOne({ deviceId });
+    const rec: XRayDocument | null = await this.xrayModel.findOne(
+      { deviceId },
+      {},
+      { sort: { createdAt: -1 } },
+    );
     return rec?.toJSON();
   }
 

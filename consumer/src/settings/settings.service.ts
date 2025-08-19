@@ -28,4 +28,8 @@ export class SettingsService {
       isSwaggerEnabled: this.config.get('ENABLE_SWAGGER') === 'true',
     } as ISettingData;
   }
+
+  isProduction() {
+    return this.config.get('NODE_ENV') === 'production';
+  }
 }
