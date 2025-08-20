@@ -33,4 +33,18 @@ export class XRayService {
   getDeviceIds() {
     return this.xrayModel.find().distinct('deviceId');
   }
+
+  findNearby(lng: number, lat: number) {
+    this.logger.debug(`findNearby | lng: ${lng}, lat: ${lat}`);
+    return this.xrayModel
+      .find({
+        location: {
+          $near: {
+            $geometry: { type: 'Point', coordinates: [lng, lat] },
+            $maxDistance: 500,
+          },
+        },
+      })
+      .limit(10);
+  }
 }
