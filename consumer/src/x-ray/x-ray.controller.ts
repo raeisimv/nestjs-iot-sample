@@ -1,21 +1,21 @@
 import { ApiTags } from '@nestjs/swagger';
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
-import { AddXrayDto, FindNearbyDto } from './dtos';
 import { XRayService } from './x-ray.service';
+import { AddXrayDto } from './dtos';
 
 @Controller('api/xray')
 @ApiTags('XRay')
 export class XRayController {
   constructor(private readonly xrayService: XRayService) {}
 
+  @Get('nearby')
+  findNearby(@Query('lng') lng: number, @Query('lat') lat: number) {
+    return this.xrayService.findNearby(lng, lat);
+  }
+
   @Get(':id')
   getDevice(@Param('id') deviceId: string) {
     return this.xrayService.getLatestRecord(deviceId);
-  }
-
-  @Get('nearby')
-  findNearby(@Query() q: FindNearbyDto) {
-    return this.xrayService.findNearby(q.lng, q.lat);
   }
 
   @Get()
