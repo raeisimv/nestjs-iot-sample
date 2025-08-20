@@ -2,10 +2,11 @@
 A nestjs application to produce and process X-Ray signals
 
 ### Project setup
-This project leverages `docker-compose` to setup and run. Clone the code and run the docker compose file.
+This project leverages `docker-compose` to setup and run. Clone the code and run the docker compose file:
 
 ```shell
   git clone https://github.com/raeisimv/nestjs-iot-sample.git && \
+  cd nestjs-iot-sample && \
   sudo docker compose up -d --build && \
   sudo docker compose logs --tail 100 -f
 ```
