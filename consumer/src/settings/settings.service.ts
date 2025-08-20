@@ -24,7 +24,7 @@ export class SettingsService {
         signalRoutingKey: this.config.get('RABBITMQ_ROUTING_KEY_SIGNAL'),
       },
       mongodbURI: this.config.get<string>('MONGO_URI'),
-      port: +(this.config.get<number>('NODE_PORT') || 3000),
+      port: +(this.config.get<number>('APP_PORT') || 3000),
       isSwaggerEnabled: this.config.get('ENABLE_SWAGGER') === 'true',
     } as ISettingData;
   }

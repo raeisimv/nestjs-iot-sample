@@ -32,7 +32,10 @@ services:
     image: rabbitmq:3-management
     env_file:
       - .env
-    restart: always
+    ports:
+#      - "5672:5672"
+      - "15672:15672"
+    restart: on-failure
     networks:
       iot:
 

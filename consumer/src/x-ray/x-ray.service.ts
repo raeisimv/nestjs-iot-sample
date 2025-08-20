@@ -1,7 +1,7 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { XRay, XRayDocument } from './schemas';
 import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import { Injectable, Logger } from '@nestjs/common';
+import { XRay, XRayDocument } from './schemas';
 import { IXRayModel } from './interfaces';
 
 @Injectable()
@@ -12,9 +12,13 @@ export class XRayService {
     @InjectModel(XRay.name) private readonly xrayModel: Model<XRay>,
   ) {}
 
-  create(model: IXRayModel) {
-    console.log(JSON.stringify(model, null, 2));
-    return this.xrayModel.create(model);
+  async create(model: IXRayModel) {
+    try {
+      const res = await this.xrayModel.create(model);
+      return res;
+    } catch (e) {
+      this.logger.error('create | cannot create XRay', e);
+    }
   }
 
   async getLatestRecord(deviceId: string) {

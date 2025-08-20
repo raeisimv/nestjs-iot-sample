@@ -16,12 +16,14 @@ export class RabbitmqService implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    this.logger.debug('RabbitmqService | onModuleInit');
+    this.logger.debug('RabbitmqService | initializing ...');
     const conn = amqp.connect({
       hostname: this.settingService.getConfig().rabbitmq.hostname,
       username: this.settingService.getConfig().rabbitmq.username,
       password: this.settingService.getConfig().rabbitmq.password,
     });
+
+    this.logger.debug('RabbitmqService | connected, creating channel ...');
     this.channel = conn.createChannel();
     await this.channel.addSetup(async (channel: ConfirmChannel) => {
       await channel.assertExchange(
@@ -40,6 +42,7 @@ export class RabbitmqService implements OnModuleInit {
       );
       await channel.consume(QUEUE_NAME, this.onXRayEvent.bind(this));
     });
+    this.logger.debug('RabbitmqService | connected successfully.');
   }
 
   private onXRayEvent(msg: ConsumeMessage) {

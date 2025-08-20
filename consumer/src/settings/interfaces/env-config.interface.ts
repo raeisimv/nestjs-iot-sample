@@ -7,6 +7,6 @@ export interface IEnvConfig {
 
   NODE_ENV: string;
   MONGO_URI: string;
-  NODE_PORT: number;
+  APP_PORT: number;
   ENABLE_SWAGGER: string;
 }

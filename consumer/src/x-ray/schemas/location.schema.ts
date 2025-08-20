@@ -6,7 +6,17 @@ export class Location {
   @Prop({ required: true })
   time: number;
 
-  @Prop({ type: { type: String, enum: ['Point'], required: true } })
+  @Prop({
+    type: {
+      type: String,
+      enum: ['Point'],
+      required: true,
+    },
+    coordinates: {
+      type: [Number], // [longitude, latitude]
+      required: true,
+    },
+  })
   location: {
     type: string;
     coordinates: [number];
