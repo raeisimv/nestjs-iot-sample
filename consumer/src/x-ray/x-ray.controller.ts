@@ -9,8 +9,12 @@ export class XRayController {
   constructor(private readonly xrayService: XRayService) {}
 
   @Get('nearby')
-  findNearby(@Query('lng') lng: number, @Query('lat') lat: number) {
-    return this.xrayService.findNearby(lng, lat);
+  findNearby(
+    @Query('lng') lng: number,
+    @Query('lat') lat: number,
+    @Query('distance') distance: number,
+  ) {
+    return this.xrayService.findNearby(lng, lat, distance);
   }
 
   @Get(':id')
