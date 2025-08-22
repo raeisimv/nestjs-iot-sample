@@ -32,13 +32,9 @@ async function bootstrap() {
       .setVersion('0.1.0')
       .addTag('XRay Tag')
       .build();
-    // .addBearerAuth();
 
     const documentFactory = () => SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('swagger', app, documentFactory);
-
-    // const document = SwaggerModule.createDocument(app, swaggerBuilder.build());
-    // SwaggerModule.setup('swagger', app, document);
   }
 
   const port = settingService.getConfig().port;
