@@ -9,9 +9,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const settingService = app.get(SettingsService);
 
-  app.enableCors({
-    origin: '*', // in real application set valid URLs only like https://my.webpage.ir
-  });
+  app.enableCors(settingService.getCors());
 
   app.useGlobalPipes(
     new ValidationPipe({

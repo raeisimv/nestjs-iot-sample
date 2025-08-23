@@ -1,8 +1,8 @@
-import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
-import { ConfirmChannel, ConsumeMessage } from 'amqplib';
-import { SettingsService } from '../settings/settings.service';
 import amqp, { ChannelWrapper } from 'amqp-connection-manager';
+import { ConfirmChannel, ConsumeMessage } from 'amqplib';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { XRayInboundService } from '../x-ray/x-ray-inbound.service';
+import { SettingsService } from '../settings/settings.service';
 import { IXRayRawSignal } from '../x-ray/interfaces';
 
 @Injectable()

@@ -32,4 +32,11 @@ export class SettingsService {
   isProduction() {
     return this.config.get('NODE_ENV') === 'production';
   }
+
+  getCors() {
+    return {
+      // should get provided by configuration and avoid using '*'
+      origin: '*',
+    };
+  }
 }
