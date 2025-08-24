@@ -1,9 +1,11 @@
-import { NestFactory } from '@nestjs/core';
+import * as helmet from 'helmet';
+import { ExpressAdapter } from '@nestjs/platform-express';
 import { Logger, ValidationPipe } from '@nestjs/common';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { GlobalExceptionFilter } from './filters/global-exception.filter';
 import { SettingsService } from './settings/settings.service';
 import { AppModule } from './app.module';
-import { GlobalExceptionFilter } from './filters/global-exception.filter';
 
 async function bootstrap() {
   const logger = new Logger('bootstrap');
@@ -22,6 +24,16 @@ async function bootstrap() {
       // disableErrorMessages: settingService.isProduction(),
     }),
   );
+
+  // security
+  app.use(helmet.hidePoweredBy());
+  app.use(helmet.frameguard({ action: 'deny' }));
+  app.use(helmet.noSniff());
+  const adapter = app
+    .get(HttpAdapterHost)
+    .httpAdapter.getInstance<ExpressAdapter>();
+  adapter.disable('etag');
+  adapter.disable('Server');
 
   // Swagger
   if (settingService.getConfig().isSwaggerEnabled) {
