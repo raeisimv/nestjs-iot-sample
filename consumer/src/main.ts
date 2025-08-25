@@ -3,6 +3,7 @@ import { ExpressAdapter } from '@nestjs/platform-express';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { CorrelationIdMiddleware } from './middleware';
 import { GlobalExceptionFilter } from './filters/global-exception.filter';
 import { SettingsService } from './settings/settings.service';
 import { AppModule } from './app.module';
@@ -13,6 +14,7 @@ async function bootstrap() {
   const settingService = app.get(SettingsService);
 
   app.enableCors(settingService.getCors());
+  app.use(new CorrelationIdMiddleware().use.bind(app));
   app.useGlobalFilters(new GlobalExceptionFilter());
   app.useGlobalPipes(
     new ValidationPipe({
