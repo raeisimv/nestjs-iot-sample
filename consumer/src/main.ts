@@ -23,11 +23,11 @@ async function bootstrap() {
       forbidUnknownValues: true,
       forbidNonWhitelisted: true,
       skipMissingProperties: true,
-      // disableErrorMessages: settingService.isProduction(),
+      disableErrorMessages: settingService.isProduction(),
     }),
   );
 
-  // security
+  // organize and secure response headers
   app.use(helmet.hidePoweredBy());
   app.use(helmet.frameguard({ action: 'deny' }));
   app.use(helmet.noSniff());
@@ -55,4 +55,10 @@ async function bootstrap() {
   await app.listen(port);
 }
 
-bootstrap();
+bootstrap()
+  .then(() => {
+    console.log('bootstrap | Application shutdown gracefully');
+  })
+  .catch((error) => {
+    console.error('bootstrap | Application shutdown failed:', error);
+  });
