@@ -13,6 +13,13 @@ export class SettingsService {
   getConfig(): ISettingData {
     return this.configData;
   }
+  getRabbitMQConn() {
+    return {
+      hostname: this.configData.rabbitmq.hostname,
+      username: this.configData.rabbitmq.username,
+      password: this.configData.rabbitmq.password,
+    };
+  }
 
   private parseConfig(): ISettingData {
     return {
