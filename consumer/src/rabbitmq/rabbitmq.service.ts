@@ -17,11 +17,7 @@ export class RabbitmqService implements OnModuleInit {
 
   async onModuleInit() {
     this.logger.debug('RabbitmqService | initializing ...');
-    const conn = amqp.connect({
-      hostname: this.settingService.getConfig().rabbitmq.hostname,
-      username: this.settingService.getConfig().rabbitmq.username,
-      password: this.settingService.getConfig().rabbitmq.password,
-    });
+    const conn = amqp.connect(this.settingService.getRabbitMQConn());
 
     this.logger.debug('RabbitmqService | connected, creating channel ...');
     this.channel = conn.createChannel();
@@ -40,18 +36,22 @@ export class RabbitmqService implements OnModuleInit {
         this.settingService.getConfig().rabbitmq.exchange,
         this.settingService.getConfig().rabbitmq.signalRoutingKey,
       );
-      await channel.consume(QUEUE_NAME, this.onXRayEvent.bind(this));
+      await channel.consume(QUEUE_NAME, (data: ConsumeMessage) => {
+        this.onXRayEvent(data).catch((err) => {
+          this.logger.error('consume | error processing XRay event', err);
+        });
+      });
     });
     this.logger.debug('RabbitmqService | connected successfully.');
   }
 
-  private onXRayEvent(msg: ConsumeMessage) {
+  private async onXRayEvent(msg: ConsumeMessage) {
     // this.logger.debug('RabbitmqService | onXRayEvent');
     if (!msg?.content) {
       return;
     }
     const content = msg.content.toString();
     const payload = JSON.parse(content) as IXRayRawSignal;
-    this.xrayInboundService.processSignal(payload);
+    await this.xrayInboundService.processSignal(payload);
   }
 }

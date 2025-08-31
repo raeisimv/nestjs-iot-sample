@@ -19,7 +19,6 @@ export class GlobalExceptionFilter implements RpcExceptionFilter {
     const statusCode =
       (typeof exception.getStatus === 'function' ? exception.getStatus() : 0) ||
       422;
-    // exception?.statusCode || exception?.code || exception.getStatus();
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
 
