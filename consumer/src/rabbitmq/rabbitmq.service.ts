@@ -16,10 +16,7 @@ export class RabbitmqService implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    this.logger.debug('RabbitmqService | initializing ...');
     const conn = amqp.connect(this.settingService.getRabbitMQConn());
-
-    this.logger.debug('RabbitmqService | connected, creating channel ...');
     this.channel = conn.createChannel();
     await this.channel.addSetup(async (channel: ConfirmChannel) => {
       await channel.assertExchange(
@@ -46,7 +43,6 @@ export class RabbitmqService implements OnModuleInit {
   }
 
   private async onXRayEvent(msg: ConsumeMessage) {
-    // this.logger.debug('RabbitmqService | onXRayEvent');
     if (!msg?.content) {
       return;
     }
