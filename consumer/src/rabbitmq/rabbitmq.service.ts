@@ -4,6 +4,7 @@ import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { XRayInboundService } from '../x-ray/x-ray-inbound.service';
 import { SettingsService } from '../settings/settings.service';
 import { IXRayRawSignal } from '../x-ray/interfaces';
+import { QUEUE_NAME } from './constants';
 
 @Injectable()
 export class RabbitmqService implements OnModuleInit {
@@ -26,7 +27,6 @@ export class RabbitmqService implements OnModuleInit {
           durable: false,
         },
       );
-      const QUEUE_NAME = 'consumer.x-ray';
       await channel.assertQueue(QUEUE_NAME, { exclusive: false });
       await channel.bindQueue(
         QUEUE_NAME,
