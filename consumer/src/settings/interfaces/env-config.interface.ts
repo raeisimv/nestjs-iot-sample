@@ -9,4 +9,5 @@ export interface IEnvConfig {
   MONGO_URI: string;
   APP_PORT: number;
   ENABLE_SWAGGER: string;
+  ALLOWED_ORIGINS: string;
 }

@@ -5,4 +5,5 @@ export interface ISettingData {
   port: number;
   mongodbURI: string;
   isSwaggerEnabled: boolean;
+  allowedOrigins: string;
 }

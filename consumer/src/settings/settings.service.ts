@@ -33,6 +33,7 @@ export class SettingsService {
       mongodbURI: this.config.get<string>('MONGO_URI'),
       port: +(this.config.get<number>('APP_PORT') || 3000),
       isSwaggerEnabled: this.config.get('ENABLE_SWAGGER') === 'true',
+      allowedOrigins: this.config.get<string>('ALLOWED_ORIGINS'),
     } as ISettingData;
   }
 
@@ -42,8 +43,7 @@ export class SettingsService {
 
   getCors() {
     return {
-      // should get provided by configuration and avoid using '*'
-      origin: '*',
+      origin: this.configData.allowedOrigins,
     };
   }
 }
